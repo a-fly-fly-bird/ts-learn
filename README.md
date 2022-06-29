@@ -115,8 +115,61 @@ let myFavoriteNumber: string | number;
 
 ## 接口
 
+在 TypeScript 中，我们使用接口（Interfaces）来定义对象的类型。
 
+TypeScript 中的接口是一个非常灵活的概念，除了可用于对类的一部分行为进行抽象以外，也常用于对「对象的形状（Shape）」进行描述。
 
+eg. 
+``` typescript
+interface Person {
+    name: string;
+    age: number;
+}
 
+let tom: Person = {
+    name: 'Tom',
+    age: 25
+};
+```
+赋值的时候，变量的形状必须和接口的形状保持一致(不能多或者少变量)。
 
+### 可选属性
+有时我们希望不要完全匹配一个形状，那么可以用可选属性。
 
+``` typescript
+interface Person {
+    name: string;
+    age?: number;
+}
+
+let tom: Person = {
+    name: 'Tom'
+};
+
+```
+
+### In addition to
+除此之外，还有任意属性和只读属性。用时再说。
+
+## 数组
+在 TypeScript 中，数组类型有多种定义方式，比较灵活。
+
+### 「类型 + 方括号」表示法
+``` typescript
+let fibonacci: number[] = [1, 1, 2, 3, 5];
+```
+
+其他表示方法忽略。
+
+### any 在数组中的应用
+
+一个比较常见的做法是，用 any 表示数组中允许出现任意类型：
+``` typescript
+let list: any[] = ['xcatliu', 25, { website: 'http://xcatliu.com' }];
+```
+
+## 函数
+
+> 函数是 JavaScript 中的一等公民
+
+ 
