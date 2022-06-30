@@ -172,4 +172,108 @@ let list: any[] = ['xcatliu', 25, { website: 'http://xcatliu.com' }];
 
 > 函数是 JavaScript 中的一等公民
 
- 
+在 JavaScript 中，有两种常见的定义函数的方式——函数声明（Function Declaration）和函数表达式（Function Expression）。
+
+``` TypeScript
+// 函数声明（Function Declaration）
+function sum(x, y) {
+    return x + y;
+}
+
+// 函数表达式（Function Expression）
+let mySum = function (x, y) {
+    return x + y;
+};
+```
+
+在TypeScript中，要进行类型约束。
+
+``` TypeScript
+function sum(x: number, y: number): number {
+    return x + y;
+}
+```
+
+### 函数表达式
+
+TS中最正规的写法：
+``` TypeScript
+let mySum: (x: number, y: number) => number = function (x: number, y: number): number {
+    return x + y;
+};
+```
+在 TypeScript 的类型定义中，=> 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。
+
+在 ES6 中，=> 叫做箭头函数， 注意不要混淆了 TypeScript 中的 => 和 ES6 中的 =>。
+
+ES6中箭头函数的作用：http://es6.ruanyifeng.com/#docs/function#箭头函数
+
+### 用接口定义函数的形状
+
+### 可选参数
+
+### 参数默认值
+
+### 剩余参数
+
+### 重载
+
+跳过。
+
+## 类型断言
+
+语法: `值 as 类型` 或者 `<类型>值`
+
+建议大家在使用类型断言时，统一使用 值 as 类型 这样的语法。
+
+### 使用案例
+
+``` TypeScript
+interface Cat {
+    name: string;
+    run(): void;
+}
+interface Fish {
+    name: string;
+    swim(): void;
+}
+
+function isFish(animal: Cat | Fish) {
+    if (typeof (animal as Fish).swim === 'function') {
+        return true;
+    }
+    return false;
+}
+```
+
+## 声明文件
+
+当一个第三方库没有提供声明文件时，我们就需要自己书写声明文件。
+
+在不同的场景下，声明文件的内容和使用方式会有所区别。
+
+库的使用场景主要有以下几种：
+
+* 全局变量：通过 \<script> 标签引入第三方库，注入全局变量
+* npm 包：通过 import foo from 'foo' 导入，符合 ES6 模块规范
+* UMD 库：既可以通过 \<script> 标签引入，又可以通过 import 导入
+* 直接扩展全局变量：通过 \<script> 标签引入后，改变一个全局变量的结构
+* 在 npm 包或 UMD 库中扩展全局变量：引用 npm 包或 UMD 库后，改变一个全局变量的结构
+* 模块插件：通过 \<script> 或 import 导入后，改变另一个模块的结构
+
+## 内置对象
+JavaScript 中有很多内置对象，它们可以直接在 TypeScript 中当做定义好了的类型。
+
+ECMAScript 标准提供的内置对象有：
+Boolean、Error、Date、RegExp 等。
+
+DOM 和 BOM 提供的内置对象有：
+Document、HTMLElement、Event、NodeList 等。
+
+## 代码检查
+
+2019 年 1 月，TypeScirpt 官方决定全面采用 ESLint 作为代码检查的工具，并创建了一个新项目 typescript-eslint，提供了 TypeScript 文件的解析器 @typescript-eslint/parser 和相关的配置选项 @typescript-eslint/eslint-plugin 等。
+
+代码检查主要是用来发现代码错误、统一代码风格。
+在 JavaScript 项目中，我们一般使用 ESLint 来进行代码检查，它通过插件化的特性极大的丰富了适用范围，搭配 typescript-eslint 之后，甚至可以用来检查 TypeScript 代码。
+
