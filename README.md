@@ -277,3 +277,101 @@ Document、HTMLElement、Event、NodeList 等。
 代码检查主要是用来发现代码错误、统一代码风格。
 在 JavaScript 项目中，我们一般使用 ESLint 来进行代码检查，它通过插件化的特性极大的丰富了适用范围，搭配 typescript-eslint 之后，甚至可以用来检查 TypeScript 代码。
 
+# 单文件组件 \<script setup>
+
+参考文章：https://v3.cn.vuejs.org/api/sfc-script-setup.html#仅限-typescript-的功能
+
+\<script setup> 是在单文件组件 (SFC) 中使用 [组合式 API](https://v3.cn.vuejs.org/guide/composition-api-introduction.html#什么是组合式-api) 
+的编译时语法糖。相比于普通的 \<script> 语法，它具有更多优势:
+1. 更少的样板内容，更简洁的代码。
+2. 能够使用纯 TypeScript 声明 props 和抛出事件。
+3. 更好的运行时性能 (其模板会被编译成与其同一作用域的渲染函数，没有任何的中间代理)。
+4. 更好的 IDE 类型推断性能 (减少语言服务器从代码中抽离类型的工作)。
+
+## 什么是Props
+
+参考文章： https://www.jianshu.com/p/89bd18e44e73
+
+
+组件接受的选项之一 props 是 Vue 中非常重要的一个选项。父子组件的关系可以总结为：
+
+props down, events up
+
+父组件通过 props 向下传递数据给子组件；子组件通过 events 给父组件发送消息。
+
+## setup基本语法
+
+要使用这个语法，需要将 setup attribute 添加到 \<script> 代码块上。
+
+``` js
+<script setup>
+console.log('hello script setup')
+</script>
+```
+
+### 顶层的绑定
+当使用 \<script setup> 的时候，任何在 \<script setup> 声明的顶层的绑定 (包括变量，函数声明，以及 import 引入的内容) 都能在模板中直接使用。
+
+``` js
+<script setup>
+// 变量
+const msg = 'Hello!'
+
+// 函数
+function log() {
+  console.log(msg)
+}
+</script>
+```
+
+import 导入的内容也会以同样的方式暴露。
+
+## 使用组件
+
+\<script setup> 范围里的值也能被直接作为自定义组件的标签名使用。
+
+``` js
+<script setup>
+import MyComponent from './MyComponent.vue'
+</script>
+
+<template>
+  <MyComponent />
+</template>
+```
+
+### 动态组件
+
+由于组件被引用为变量而不是作为字符串键来注册的，在 \<script setup> 中要使用动态组件的时候，就应该使用动态的 :is 来绑定：
+
+``` js
+<script setup>
+import Foo from './Foo.vue'
+import Bar from './Bar.vue'
+</script>
+
+<template>
+  <component :is="Foo" />
+  <component :is="someCondition ? Foo : Bar" />
+</template>
+
+```
+
+## defineProps 和 defineEmits
+
+在 \<script setup> 中必须使用 defineProps 和 defineEmits API 来声明 props 和 emits ，它们具备完整的类型推断并且在 \<script setup> 中是直接可用的。
+
+``` js
+<script setup>
+const props = defineProps({
+  foo: String
+})
+
+const emit = defineEmits(['change', 'delete'])
+// setup code
+</script>
+```
+
+# Vue3 + \<script setup> + Typescript
+
+有了以上基础，我们就可以愉快的使用`Vue3 + \<script setup> + Typescript`进行项目开发啦。
